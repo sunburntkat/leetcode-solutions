@@ -11,10 +11,7 @@
  */
 public class Solution {
     public ListNode ModifiedList(int[] nums, ListNode head) {
-        var hashset=new HashSet<int>();
-        for(int i=0;i<nums.Length;i++){
-            hashset.Add(nums[i]);
-        }
+        var hashset=new HashSet<int>(nums);
         var parent=new ListNode(-1,head);
         var result=parent;
         var node=head;
