@@ -15,18 +15,18 @@ public class Solution {
         for(int i=0;i<nums.Length;i++){
             hashset.Add(nums[i]);
         }
+        var parent=new ListNode(-1,head);
+        var result=parent;
         var node=head;
-        while(node.next!=null){
-            if(hashset.Contains(node.next.val)){
-                node.next=node.next.next;
+        while(node!=null){
+            if(hashset.Contains(node.val)){
+                parent.next=node.next;
             }
             else{
-                node=node.next;
+                parent=node;
             }
+            node=node.next;
         }
-        if(!hashset.Add(head.val)){
-            head=head.next;
-        }
-        return head;
+        return result.next;
     }
 }
