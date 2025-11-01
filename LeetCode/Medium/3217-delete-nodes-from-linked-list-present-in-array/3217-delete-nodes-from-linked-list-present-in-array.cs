@@ -12,7 +12,8 @@
 public class Solution {
     public ListNode ModifiedList(int[] nums, ListNode head) {
         var hashset=new HashSet<int>(nums);
-        var parent=new ListNode(-1,head);
+        var parent=new ListNode(-1);
+        parent.next=head;
         var result=parent;
         var node=head;
         while(node!=null){
