@@ -15,7 +15,7 @@ public class Solution {
         visited.Add(node);
         for(int i=0;i<isConnected.Length;i++){
             int neighbour=isConnected[node][i];
-            if(isConnected[node][i]==1 && !visited.Contains(i)){
+            if(!visited.Contains(i) && isConnected[node][i]==1){
                 DFS(i,isConnected);
             }
         }
