@@ -10,7 +10,8 @@ public class Solution {
             long mid=l+(r-l)/2+1;
             long runTime=0;
             for(int i=0;i<batteries.Length;i++){
-                runTime+=Math.Min(batteries[i],mid);
+                runTime+=batteries[i]<mid?batteries[i]:mid;
+                // runTime+=Math.Min(batteries[i],mid);
             }
             if(runTime/n>=mid){
                 l=mid;
