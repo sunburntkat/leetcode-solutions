@@ -1,55 +1,52 @@
 public class Solution {
     public int OrangesRotting(int[][] grid) {
-        int minutes=0;
-        var frontier=new List<int[]>();
-        for(int i=0;i<grid.Length;i++){
-            for(int j=0;j<grid[0].Length;j++){
-                if(grid[i][j]==2){
-                    frontier.Add(new int[]{i,j});
-                    grid[i][j]=1;
-                }
+        int rows = grid.Length;
+        if (rows == 0) return -1;
+        int cols = grid[0].Length;
+
+        var q = new Queue<int[]>();
+        int fresh = 0;
+
+        // initialize queue with all rotten oranges and count fresh
+        for (int r = 0; r < rows; r++) {
+            for (int c = 0; c < cols; c++) {
+                if (grid[r][c] == 2) q.Enqueue(new int[] { r, c });
+                else if (grid[r][c] == 1) fresh++;
             }
         }
-        while(frontier.Count!=0){
-            Console.Write(1);
-            bool traversed=false;
-            var list=new List<int[]>();
-            for(int k=0;k<frontier.Count;k++){
-                int i=frontier[k][0];
-                int j=frontier[k][1];
-                if(i>=grid.Length||i<0||j>=grid[0].Length||j<0){
-                    continue;
-                }
-                if(grid[i][j]==0||grid[i][j]==2){
-                    continue;
-                }
-                Console.Write(3);
-                list.Add(new int[]{i+1,j});
-                list.Add(new int[]{i-1,j});
-                list.Add(new int[]{i,j+1});
-                list.Add(new int[]{i,j-1});
-                grid[i][j]=2;
-                traversed=true;
-            }
-            frontier=list;
-            if(frontier.Count==0){
-                minutes--;
-                break;
-            }
-            if(!traversed){
-                break;
-            }
-            Console.Write(frontier.Count);
-            minutes++;
-        } 
-        for(int i=0;i<grid.Length;i++){
-            for(int j=0;j<grid[0].Length;j++){
-                Console.Write(2);
-                if(grid[i][j]==1){
-                    return -1;
+
+        if (fresh == 0) return 0; // no fresh oranges at all
+
+        int minutes = 0;
+        int[][] dirs = new int[][] {
+            new int[]{ 1, 0 }, new int[]{ -1, 0 }, new int[]{ 0, 1 }, new int[]{ 0, -1 }
+        };
+
+        while (q.Count > 0) {
+            int size = q.Count;
+            bool anyRottedThisMinute = false;
+
+            for (int i = 0; i < size; i++) {
+                var cur = q.Dequeue();
+                int r = cur[0], c = cur[1];
+
+                foreach (var d in dirs) {
+                    int nr = r + d[0], nc = c + d[1];
+                    if (nr < 0 || nr >= rows || nc < 0 || nc >= cols) continue;
+                    if (grid[nr][nc] != 1) continue; // only rot fresh oranges
+
+                    // rot it and enqueue immediately to avoid duplicates
+                    grid[nr][nc] = 2;
+                    fresh--;
+                    q.Enqueue(new int[] { nr, nc });
+                    anyRottedThisMinute = true;
                 }
             }
+
+            if (anyRottedThisMinute) minutes++;
+            if (fresh == 0) return minutes; // early exit
         }
-        return minutes;
+
+        return -1; // there are still fresh oranges left
     }
 }
