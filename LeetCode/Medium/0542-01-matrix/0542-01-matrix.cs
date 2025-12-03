@@ -19,9 +19,8 @@ public class Solution {
             int n=queue.Count;
             for(int i=0;i<n;i++){
                 var node=queue.Dequeue();
-                if(visited.Contains(node)) continue;
+                // if(visited.Contains(node)) continue;
                 mat[node.i][node.j]=iter;
-                visited.Add(node);
                 for(int j=0;j<4;j++){
                     int ni=node.i+di[j];
                     int nj=node.j+dj[j];
@@ -29,6 +28,7 @@ public class Solution {
                     if(mat[ni][nj]==0) continue;
                     if(visited.Contains((ni,nj))) continue;
                     queue.Enqueue((ni,nj));
+                    visited.Add((ni,nj));
                 }
             }
             iter++;
