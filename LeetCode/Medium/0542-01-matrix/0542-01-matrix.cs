@@ -1,7 +1,7 @@
 public class Solution {
     public int[][] UpdateMatrix(int[][] mat) {
         Queue<(int i,int j)> queue=new();
-        HashSet<(int,int)> visited=new();
+        var visited=new bool[mat.Length,mat[0].Length];
         int[] di={0,0,1,-1};
         int[] dj={1,-1,0,0};
 
@@ -26,9 +26,9 @@ public class Solution {
                     int nj=node.j+dj[j];
                     if(ni<0||nj<0||ni>=mat.Length||nj>=mat[0].Length) continue;
                     if(mat[ni][nj]==0) continue;
-                    if(visited.Contains((ni,nj))) continue;
+                    if(visited[ni,nj]) continue;
                     queue.Enqueue((ni,nj));
-                    visited.Add((ni,nj));
+                    visited[ni,nj]=true;
                 }
             }
             iter++;
