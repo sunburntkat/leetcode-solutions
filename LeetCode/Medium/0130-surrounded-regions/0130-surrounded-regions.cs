@@ -25,10 +25,10 @@ public class Solution {
         bool[,] visited=new bool[m,n];
         Stack<(int i,int j)> stack=new();
         for(int i=0;i<Os.Count;i++){
-            // if(visited.Contains((Os[i].i,Os[i].j))) continue;
             stack.Push((Os[i].i,Os[i].j));
             while(stack.Count>0){
                 var node=stack.Pop();
+                if(visited[node.i,node.j]) continue;
                 visited[node.i,node.j]=true;
 
                 for(int k=0;k<4;k++){
@@ -39,8 +39,7 @@ public class Solution {
                     if(visited[ni,nj]) continue;
                     if(board[ni][nj]=='X') continue;
 
-                    stack.Push((ni,nj));
-                    
+                    stack.Push((ni,nj)); 
                 }
             }
         }
