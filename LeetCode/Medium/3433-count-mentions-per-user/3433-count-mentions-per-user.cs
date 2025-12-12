@@ -2,6 +2,7 @@ public class Solution {
     public int[] CountMentions(int numberOfUsers, IList<IList<string>> events) {
         int[] status=new int[numberOfUsers];
         int[] mentions=new int[numberOfUsers];
+        Array.Fill(status,-60);
         var eventsList = events
                 .Select(e => e.ToList())
                 .ToList();
@@ -18,20 +19,7 @@ public class Solution {
             var curEvent=eventsList[i];
             if(curEvent[0]=="OFFLINE"){
                 int currentTime=Convert.ToInt32(curEvent[1]);
-                int timePassed=currentTime-lastModifiedTime;
-                for(int j=0;j<status.Length;j++){
-                    int id=Convert.ToInt32(j);
-                    if(status[id]>0){
-                        if(timePassed>=status[id]){
-                            status[id]=0;
-                        }
-                        else{
-                            status[id]-=timePassed;
-                        }
-                    }
-                }
-                status[Convert.ToInt32(curEvent[2])]=60;
-                lastModifiedTime=currentTime;
+                status[Convert.ToInt32(curEvent[2])]=currentTime;
             }
             else{
                 if(curEvent[2]=="ALL"){
@@ -40,22 +28,13 @@ public class Solution {
                     }
                 }
                 else if(curEvent[2]=="HERE"){
-                    int timePassed=Convert.ToInt32(curEvent[1])-lastModifiedTime;
+                    int currentTime=Convert.ToInt32(curEvent[1]);
                     for(int j=0;j<status.Length;j++){
                         int id=Convert.ToInt32(j);
-                        if(status[id]>0){
-                            if( timePassed>=status[id]){
-                                status[id]=0;
-                            }
-                            else{
-                                status[id]-=timePassed;
-                            }
-                        }
-                        if(status[id]==0){
+                        if(currentTime-status[id]>=60){
                             mentions[id]++;
                         }
                     }
-                    lastModifiedTime=Convert.ToInt32(curEvent[1]);
                 }
                 else{
                     var ids=curEvent[2].Split(' ');
