@@ -22,7 +22,7 @@ class Solution {
             if(min.next!=null){
                 pq.add(min.next);
             }
-            curr.next=new ListNode(min.val);
+            curr.next=min;
             curr=curr.next;   
         }
         return result.next;
