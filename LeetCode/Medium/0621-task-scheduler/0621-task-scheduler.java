@@ -1,20 +1,22 @@
 class Solution {
     public void addNext(PriorityQueue<Integer> pq, int[] lastPos, int[] freq, int curr, int n) {
         int maxTask;
-        if (!pq.isEmpty()) {
+        Queue<Integer> queue=new LinkedList<>();
+        while (!pq.isEmpty()) {
             maxTask = pq.poll();
-        } else {
-            return;
+            if (curr - lastPos[maxTask] > n) {
+                lastPos[maxTask] = curr;
+                freq[maxTask]--;
+                if (freq[maxTask] > 0) {
+                    queue.offer(maxTask);
+                }
+                break;
+            } else {
+                queue.offer(maxTask);
+            }
         }
-        int idleCount;
-        if (curr - lastPos[maxTask] > n) {
-            lastPos[maxTask] = curr;
-            freq[maxTask]--;
-        } else {
-            addNext(pq, lastPos, freq, curr, n);
-        }
-        if (freq[maxTask] > 0) {
-            pq.add(maxTask);
+        while(!queue.isEmpty()){
+            pq.add(queue.poll());
         }
     }
 
@@ -27,7 +29,7 @@ class Solution {
             freq[tasks[i] - 'A']++;
         }
         for (int i = 0; i < lastPos.length; i++) {
-            lastPos[i] = -n-1;
+            lastPos[i] = -n - 1;
         }
         for (int i = 0; i < freq.length; i++) {
             if (freq[i] > 0) {
