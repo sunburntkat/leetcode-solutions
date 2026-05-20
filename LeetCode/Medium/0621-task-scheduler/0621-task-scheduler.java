@@ -34,13 +34,11 @@ class Solution {
                 pq.add(i);
             }
         }
-        int result = 0;
         while (!pq.isEmpty()) {
             addNext(pq, lastPos, freq, curr, n);
-            result++;
             curr++;
         }
-        return result;
+        return curr;
 
     }
 }
