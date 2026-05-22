@@ -15,11 +15,11 @@ class Solution {
 
         int[] result = new int[k];
         int x = 0;
-        for (int i = 0; x < k && i < nums.length; i++) {
-            if (!(freqArray[nums.length - i] == null)) {
-                for (int j = 0; x < k && j < freqArray[nums.length - i].size(); j++, x++) {
-                    System.out.println(freqArray[nums.length - i].get(j));
-                    result[x] = freqArray[nums.length - i].get(j);
+        for (int i = nums.length; x < k && i>=0 ; i--) {
+            if (!(freqArray[i] == null)) {
+                for (int j = 0; x < k && j < freqArray[i].size(); j++, x++) {
+                    System.out.println(freqArray[i].get(j));
+                    result[x] = freqArray[i].get(j);
                 }
             }
         }
