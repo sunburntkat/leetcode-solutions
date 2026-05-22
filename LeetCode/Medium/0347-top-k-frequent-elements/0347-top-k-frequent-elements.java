@@ -3,15 +3,16 @@ class Solution {
         HashMap<Integer, Integer> hash = new HashMap<>();
         for (int i = 0; i < nums.length; i++) {
             hash.put(nums[i], hash.getOrDefault(nums[i], 0) + 1);
+        }
 
-        }
         List<Integer>[] freqArray = new List[nums.length + 1];
-        for (Map.Entry<Integer, Integer> entry : hash.entrySet()) {
-            if (freqArray[entry.getValue()] == null) {
-                freqArray[entry.getValue()] = new ArrayList<>();
+        for (int freq : hash.keySet()) {
+            if (freqArray[hash.get(freq)] == null) {
+                freqArray[hash.get(freq)] = new ArrayList<>();
             }
-            freqArray[entry.getValue()].add(entry.getKey());
+            freqArray[hash.get(freq)].add(freq);
         }
+
         int[] result = new int[k];
         int x = 0;
         for (int i = 0; x < k && i < nums.length; i++) {
