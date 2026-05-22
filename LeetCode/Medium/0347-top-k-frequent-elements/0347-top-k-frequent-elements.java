@@ -8,13 +8,22 @@ class Solution {
                 hash.put(nums[i], 1);
             }
         }
-        PriorityQueue<int[]> pq=new PriorityQueue<>((a,b)->Integer.compare(b[1],a[1]));
+        List<Integer>[] freqArray=new List[nums.length+1];
         for(Map.Entry<Integer,Integer> entry:hash.entrySet()){
-            pq.add(new int[]{entry.getKey(),entry.getValue()});
+            if(freqArray[entry.getValue()]==null){
+                freqArray[entry.getValue()]=new ArrayList<>();
+            }
+            freqArray[entry.getValue()].add(entry.getKey());
         }
         int[] result=new int[k];
-        for(int i=0;i<k;i++){
-            result[i]=pq.poll()[0];
+        int x=0;
+        for(int i=0;i<nums.length;i++){
+            if(!(freqArray[nums.length-i]==null)){
+                for(int j=0;x<k && j<freqArray[nums.length-i].size();j++,x++){
+                    System.out.println(freqArray[nums.length-i].get(j));
+                    result[x]=freqArray[nums.length-i].get(j);
+                }
+            }
         }
         return result;
         
