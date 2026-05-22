@@ -17,7 +17,7 @@ class Solution {
         }
         int[] result=new int[k];
         int x=0;
-        for(int i=0;i<nums.length;i++){
+        for(int i=0;x<k && i<nums.length;i++){
             if(!(freqArray[nums.length-i]==null)){
                 for(int j=0;x<k && j<freqArray[nums.length-i].size();j++,x++){
                     System.out.println(freqArray[nums.length-i].get(j));
