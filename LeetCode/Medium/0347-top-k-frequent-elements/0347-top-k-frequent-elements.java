@@ -1,31 +1,31 @@
 class Solution {
     public int[] topKFrequent(int[] nums, int k) {
-        HashMap<Integer, Integer> hash = new HashMap<>();
-        for (int i = 0; i < nums.length; i++) {
-            if (hash.containsKey(nums[i])) {
-                hash.put(nums[i], hash.get(nums[i]) + 1);
-            } else {
-                hash.put(nums[i], 1);
-            }
-        }
-        List<Integer>[] freqArray=new List[nums.length+1];
-        for(Map.Entry<Integer,Integer> entry:hash.entrySet()){
-            if(freqArray[entry.getValue()]==null){
-                freqArray[entry.getValue()]=new ArrayList<>();
-            }
-            freqArray[entry.getValue()].add(entry.getKey());
-        }
-        int[] result=new int[k];
-        int x=0;
-        for(int i=0;x<k && i<nums.length;i++){
-            if(!(freqArray[nums.length-i]==null)){
-                for(int j=0;x<k && j<freqArray[nums.length-i].size();j++,x++){
-                    System.out.println(freqArray[nums.length-i].get(j));
-                    result[x]=freqArray[nums.length-i].get(j);
-                }
-            }
-        }
-        return result;
         
+        // Step 1: count frequency of each number
+        HashMap<Integer,Integer> map = new HashMap<>();
+        for(int i : nums){
+            map.put(i, map.getOrDefault(i, 0) + 1);
+        }
+
+        // Step 2: fill buckets (index = frequency)
+        List<Integer>[] list1 = new List[nums.length + 1];
+        for(int i : map.keySet()){
+            int freq = map.get(i);
+            if(list1[freq] == null) list1[freq] = new ArrayList<>();
+            list1[freq].add(i);
+        }
+
+        // Step 3: scan from highest freq, collect k elements
+        int[] res = new int[k];
+        int c = 0;
+        for(int i = list1.length-1; i >= 0 && c < k; i--){
+            if(list1[i] == null) continue;
+            for(int j : list1[i]){
+                res[c++] = j;
+                if(c == k) break;
+            }
+        }
+
+        return res;
     }
 }
