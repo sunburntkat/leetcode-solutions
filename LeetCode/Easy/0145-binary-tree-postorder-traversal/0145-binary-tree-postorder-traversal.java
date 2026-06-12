@@ -30,7 +30,6 @@ class Solution {
             } else {
                 result.add(stack.pop().val);
             }
-            System.out.println(curr.val);
         }
         return result;
     }
