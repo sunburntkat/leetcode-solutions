@@ -29,8 +29,6 @@ class Solution {
                 curr.right=null;
             } else {
                 result.add(stack.pop().val);
-                System.out.println("hello");
-
             }
             System.out.println(curr.val);
         }
