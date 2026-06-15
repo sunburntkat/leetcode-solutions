@@ -40,7 +40,6 @@ class Solution {
                     while (index > start && lastRowPerColumn[nodePosition.x() + 1000][0] == nodePosition.y()
                             && resultSpot.get(index) > nodePosition.node().val) {
                         index--;
-                        System.out.println("hello");
                     }
                     resultSpot.add(index + 1, nodePosition.node().val);
 
@@ -54,7 +53,6 @@ class Solution {
                     lastRowPerColumn[nodePosition.x() + 1000][0] = nodePosition.y();
                     lastRowPerColumn[nodePosition.x() + 1000][1] = 1;
                 }
-                System.out.println(lastRowPerColumn[nodePosition.x() + 1000]);
                 newLevel.add(new Position(nodePosition.node().left, nodePosition.y() + 1, nodePosition.x() - 1));
                 newLevel.add(new Position(nodePosition.node().right, nodePosition.y() + 1, nodePosition.x() + 1));
             }
