@@ -14,27 +14,23 @@
  * }
  */
 class Solution {
+    List<Integer> result = new ArrayList<>();
+
     public List<Integer> rightSideView(TreeNode root) {
-        List<TreeNode> level = new ArrayList<>();
-        List<Integer> result = new ArrayList<>();
-        if (root != null) {
-            level.add(root);
-        }
-        while (!level.isEmpty()) {
-            List<TreeNode> newLevel = new ArrayList<>();
-            TreeNode rightNode = level.get(level.size() - 1);
-            result.add(rightNode.val);
-            for (int i = 0; i < level.size(); i++) {
-                TreeNode node = level.get(i);
-                if (node.left != null) {
-                    newLevel.add(node.left);
-                }
-                if (node.right != null) {
-                    newLevel.add(node.right);
-                }
-            }
-            level = newLevel;
-        }
+        recTraversal(root, 0);
         return result;
+    }
+
+    public void recTraversal(TreeNode root, int level) {
+        if (root == null) {
+            return;
+        }
+        if (result.size() == level) {
+            result.add(level, root.val);
+        } else {
+            result.set(level, root.val);
+        }
+        recTraversal(root.left, level + 1);
+        recTraversal(root.right, level + 1);
     }
 }
