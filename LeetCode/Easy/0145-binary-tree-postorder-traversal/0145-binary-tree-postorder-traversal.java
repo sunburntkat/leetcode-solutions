@@ -21,7 +21,7 @@ class Solution {
         TreeNode prev = null;
         // stack.push(root);
         TreeNode curr = root;
-        while (prev == null || !stack.isEmpty()) {
+        while (curr!=null || !stack.isEmpty()) {
             while (curr != null) {
                 stack.push(curr);
                 curr = curr.left;
@@ -34,9 +34,7 @@ class Solution {
                 prev = curr;
                 curr = null;
             } else {
-                // stack.add(curr.right);
                 curr = curr.right;
-                prev = curr;
             }
 
         }
