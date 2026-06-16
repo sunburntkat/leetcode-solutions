@@ -15,37 +15,19 @@
  */
 class Solution {
     public boolean isSymmetric(TreeNode root) {
-        Stack<TreeNode> leftStack = new Stack<>();
-        Stack<TreeNode> rightStack = new Stack<>();
         if(root==null) return true;
-        leftStack.push(root.left);
-        rightStack.push(root.right);
-        while (!leftStack.isEmpty() && !rightStack.isEmpty()) {
-            if (leftStack.size() != rightStack.size()) {
-                return false;
-            }
-            Stack<TreeNode> newLeftStack = new Stack<>();
-            Stack<TreeNode> newRightStack = new Stack<>();
-            while (!leftStack.isEmpty()) {
-                TreeNode leftNode=leftStack.pop();
-                TreeNode rightNode=rightStack.pop();
-                if(leftNode==null && rightNode==null){
-                    continue;
-                }
-                if(leftNode==null || rightNode==null){
-                    return false;
-                }
-                if(leftNode.val!=rightNode.val){
-                    return false;
-                }
-                newLeftStack.push(leftNode.left);
-                newLeftStack.push(leftNode.right);
-                newRightStack.push(rightNode.right);
-                newRightStack.push(rightNode.left);
-            }
-            leftStack=newLeftStack;
-            rightStack=newRightStack;
+        return recIsSymmetric(root.left, root.right);
+    }
+    public boolean recIsSymmetric(TreeNode left, TreeNode right){
+        if (left == null && right == null) {
+            return true;
         }
-        return true;
+        if (left == null || right == null) {
+            return false;
+        }
+        if (left.val != right.val) {
+            return false;
+        }
+        return recIsSymmetric(left.left,right.right) && recIsSymmetric(left.right, right.left);
     }
 }
