@@ -9,26 +9,14 @@
  */
 
 class Solution {
-    TreeNode parent = null;
-
     public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
-        recLowestCommonAncestor(root,p,q);
-        return parent;
-    }
+        if(root==null) return null;
+        if(root==p||root==q) return root;
 
-    public boolean recLowestCommonAncestor(TreeNode node, TreeNode p, TreeNode q) {
-        if (node == null){
-            return false;
-        }
-        if (node == p || node == q) {
-            if(parent==null) parent = node;
-            return true;
-        }
-        boolean left = recLowestCommonAncestor(node.left, p, q);
-        boolean right = recLowestCommonAncestor(node.right, p, q);
-        if(left && right){
-            parent=node;
-        }
-        return left || right;
+        TreeNode left=lowestCommonAncestor(root.left,p,q);
+        TreeNode right=lowestCommonAncestor(root.right,p,q);
+
+        if(left!=null && right!=null) return root;
+        return left==null?right:left;
     }
 }
