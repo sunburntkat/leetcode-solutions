@@ -8,51 +8,67 @@
  * }
  */
 class Solution {
-    public List<TreeNode> list =new ArrayList<>();
-    HashSet<Integer> resultSet=new HashSet<>();
-    HashSet<TreeNode> visited=new HashSet<>();
+    HashMap<TreeNode, TreeNode> parents = new HashMap<>();
+
     public List<Integer> distanceK(TreeNode root, TreeNode target, int k) {
-        DFS(root,target);
-        int length=Math.min(k+1,list.size());
-        recDistanceK(target,k);
-        visited.add(target);
+        HashSet<TreeNode> visited = new HashSet<>();
+        parents.put(root, null);
+        findParents(root);
+        Queue<TreeNode> q = new LinkedList<>();
+        q.offer(target);
+        int level = 0;
+        while (!q.isEmpty()) {
+            if (level == k)
+                break;
+            int length = q.size();
+            for (int i = 0; i < length; i++) {
+                TreeNode node = q.poll();
+                if (node.left != null && !visited.contains(node.left)) {
+                    q.offer(node.left);
+                }
+                if (node.right != null && !visited.contains(node.right)) {
+                    q.offer(node.right);
+                }
+                if (node != root && !visited.contains(parents.get(node))) {
+                    q.offer(parents.get(node));
+                }
+                visited.add(node);
+            }
+            level++;
+        }
+        List<Integer> result = new ArrayList<>();
+        while(!q.isEmpty()) {
+            TreeNode node=q.poll();
+            result.add(node.val);
+        }
+        return result;
+    }
 
-        for(int i=0;i<length;i++){
-            System.out.println(list.get(i).val);
-            recDistanceK(list.get(i),k-i-1);
-            visited.add(list.get(i));
-        
-        }
-        return new ArrayList<>(resultSet);
-    }
-    public boolean DFS(TreeNode node, TreeNode target){
-        if(node==target){
-            // list.add(node);
-            return true;
-        }
-        boolean found=false;
-        if(node.left!=null){
-            found=DFS(node.left,target);
-        }
-        if(!found && node.right!=null){
-            found=DFS(node.right,target);
-        }
-        if(found){
-            list.add(node);
-        }
-        return found;
-    }
-    public void recDistanceK(TreeNode root, int k){
-        if(root==null) return;
-        if(visited.contains(root)){
+    public void findParents(TreeNode node) {
+        if (node == null)
             return;
+        if (node.left != null) {
+            parents.put(node.left, node);
+            findParents(node.left);
         }
-        if(k==0) {
-            resultSet.add(root.val);
-            return;
+        if (node.right != null) {
+            parents.put(node.right, node);
+            findParents(node.right);
         }
-        recDistanceK(root.left, k-1);
-        recDistanceK(root.right, k-1);
+    }
 
-    }
+    // public void recDistanceK(TreeNode root, int k) {
+    //     if (root == null)
+    //         return;
+    //     if (visited.contains(root)) {
+    //         return;
+    //     }
+    //     if (k == 0) {
+    //         resultSet.add(root.val);
+    //         return;
+    //     }
+    //     recDistanceK(root.left, k - 1);
+    //     recDistanceK(root.right, k - 1);
+
+    // }
 }
