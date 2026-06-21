@@ -14,30 +14,22 @@
  * }
  */
 class Solution {
-    Stack<TreeNode> stack=new Stack<>();
+    int k=0;
     HashMap<Integer,Integer> indices=new HashMap<>();
     public TreeNode buildTree(int[] preorder, int[] inorder) {
         for(int i=0;i<inorder.length;i++){
             indices.put(inorder[i],i);
         }
-        TreeNode tree=new TreeNode(preorder[0]);
-        stack.push(tree);
-        for(int i=1;i<preorder.length;i++){
-            TreeNode parent=stack.peek();
-            if(indices.get(preorder[i])<indices.get(parent.val)){
-                TreeNode newLeftNode=new TreeNode(preorder[i]);
-                parent.left=newLeftNode;
-                stack.push(newLeftNode);
-            }
-            else{
-                while(!stack.isEmpty() && indices.get(preorder[i])>indices.get(stack.peek().val)){
-                    parent=stack.pop();
-                }
-                TreeNode newRightNode=new TreeNode(preorder[i]);
-                parent.right=newRightNode;
-                stack.push(newRightNode);
-            }
-        }
-        return tree;
+        return recBuildTree(preorder, 0, preorder.length-1);
+    }
+    public TreeNode recBuildTree(int[] preorder, int start, int end){
+        if(start>end) return null;
+        
+        TreeNode root=new TreeNode(preorder[k]);
+        int mid=indices.get(preorder[k]);
+        k++;
+        root.left=recBuildTree(preorder,start,mid-1);
+        root.right=recBuildTree(preorder,mid+1,end);
+        return root;
     }
 }
