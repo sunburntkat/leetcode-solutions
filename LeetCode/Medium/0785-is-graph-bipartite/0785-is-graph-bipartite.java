@@ -9,7 +9,6 @@ class Solution {
             if(visited.contains(k)) continue;
             q.offer(k);
             visited.add(k);
-            System.out.println(k);
             while(!q.isEmpty()){
                 int size=q.size();
                 for(int i=0;i<size;i++){
