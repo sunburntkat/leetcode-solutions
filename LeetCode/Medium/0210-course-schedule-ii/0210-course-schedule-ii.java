@@ -1,14 +1,14 @@
 class Solution {
     public int[] findOrder(int numCourses, int[][] prerequisites) {
-        HashMap<Integer, List<Integer>> graph = new HashMap<>();
+        List<Integer>[] graph = new ArrayList[numCourses];
+        for(int i=0;i<numCourses;i++){
+            graph[i]=new ArrayList<>();
+        }
         int[] inbound = new int[numCourses];
         for (int i = 0; i < prerequisites.length; i++) {
             int v = prerequisites[i][0];
             int u = prerequisites[i][1];
-            if (!graph.containsKey(u)) {
-                graph.put(u, new ArrayList<>());
-            }
-            graph.get(u).add(v);
+            graph[u].add(v);
             inbound[v]++;
         }
         Queue<Integer> q = new LinkedList<>();
@@ -22,8 +22,8 @@ class Solution {
         while (!q.isEmpty()) {
             int course = q.poll();
             result[k++] = course;
-            for (int j = 0; j < graph.getOrDefault(course, Collections.emptyList()).size(); j++) {
-                int prerequisite = graph.get(course).get(j);
+            for (int j = 0; j < graph[course].size(); j++) {
+                int prerequisite = graph[course].get(j);
                 inbound[prerequisite]--;
                 if (inbound[prerequisite] == 0) {
                     q.offer(prerequisite);
