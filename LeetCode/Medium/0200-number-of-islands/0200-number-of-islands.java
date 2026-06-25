@@ -15,6 +15,7 @@ class Solution {
                 int[] dy={0,0,1,-1};
                 while(!q.isEmpty()){
                     int[] c=q.poll();
+                    visited[c[0]][c[1]]=true;
                     for(int k=0;k<4;k++){
                         int nr=c[0]+dy[k];
                         int nc=c[1]+dx[k];
