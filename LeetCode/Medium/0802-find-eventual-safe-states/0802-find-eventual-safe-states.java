@@ -1,7 +1,8 @@
 class Solution {
-    HashSet<Integer> visited = new HashSet<>();
+    boolean[] visited;
 
     public List<Integer> eventualSafeNodes(int[][] graph) {
+        visited = new boolean[graph.length];
         List<Integer> result = new ArrayList<>();
         for (int i = 0; i < graph.length; i++) {
             if (dfs(graph, i)) {
@@ -15,10 +16,10 @@ class Solution {
         if (graph[node].length == 0) {
             return true;
         }
-        if (visited.contains(node)) {
+        if (visited[node]) {
             return false;
         }
-        visited.add(node);
+        visited[node] = true;
         for (int i = 0; i < graph[node].length; i++) {
             if (!dfs(graph, graph[node][i])) {
                 return false;
