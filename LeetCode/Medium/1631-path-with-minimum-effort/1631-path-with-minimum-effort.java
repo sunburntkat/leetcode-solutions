@@ -5,15 +5,14 @@ class Solution {
         int[] dx = { 0, 0, -1, 1 };
         int m = heights.length;
         int n = heights[0].length;
-        boolean[][] visited = new boolean[m][n];
-        int[][] dist=new int[m][n];
-        for(int i=0;i<m;i++){
-            for(int j=0;j<n;j++){
-                dist[i][j]=Integer.MAX_VALUE;
+        int[][] dist = new int[m][n];
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                dist[i][j] = Integer.MAX_VALUE;
             }
         }
         pq.offer(new int[] { 0, 0, 0 });
-        visited[0][0] = true;
+        dist[0][0] = 0;
         while (!pq.isEmpty()) {
             int[] cell = pq.poll();
             if (cell[0] == m - 1 && cell[1] == n - 1) {
@@ -25,18 +24,14 @@ class Solution {
                 if (neiY < 0 || neiY >= m || neiX < 0 || neiX >= n) {
                     continue;
                 }
-                if (visited[neiY][neiX]) {
-                    continue;
-                }
                 int effort = Math.max(cell[2], Math.abs(heights[neiY][neiX] - heights[cell[0]][cell[1]]));
-                if(dist[neiY][neiX]<effort){
+                if (dist[neiY][neiX] <= effort) {
                     continue;
                 }
-                dist[neiY][neiX]=effort;
+                dist[neiY][neiX] = effort;
                 int[] nei = new int[] { neiY, neiX, effort };
                 pq.offer(nei);
             }
-            visited[cell[0]][cell[1]] = true;
         }
         return -1;
     }
