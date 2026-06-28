@@ -6,6 +6,12 @@ class Solution {
         int m = heights.length;
         int n = heights[0].length;
         boolean[][] visited = new boolean[m][n];
+        int[][] dist=new int[m][n];
+        for(int i=0;i<m;i++){
+            for(int j=0;j<n;j++){
+                dist[i][j]=Integer.MAX_VALUE;
+            }
+        }
         pq.offer(new int[] { 0, 0, 0 });
         visited[0][0] = true;
         while (!pq.isEmpty()) {
@@ -23,6 +29,10 @@ class Solution {
                     continue;
                 }
                 int effort = Math.max(cell[2], Math.abs(heights[neiY][neiX] - heights[cell[0]][cell[1]]));
+                if(dist[neiY][neiX]<effort){
+                    continue;
+                }
+                dist[neiY][neiX]=effort;
                 int[] nei = new int[] { neiY, neiX, effort };
                 pq.offer(nei);
             }
