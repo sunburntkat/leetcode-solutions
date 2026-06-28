@@ -1,32 +1,32 @@
 class Solution {
     public int minimumEffortPath(int[][] heights) {
-        PriorityQueue<int[]> pq=new PriorityQueue<>((a,b)->Integer.compare(a[2],b[2]));
-        int[] dy={1,-1,0,0};
-        int[] dx={0,0,-1,1};
-        int m=heights.length;
-        int n=heights[0].length;
-        boolean[][] visited=new boolean[m][n];
-        pq.offer(new int[]{0,0,0});
-        visited[0][0]=true;
-        while(!pq.isEmpty()){
-            int[] cell=pq.poll();
-            if(cell[0]==m-1 && cell[1]==n-1){
+        PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> Integer.compare(a[2], b[2]));
+        int[] dy = { 1, -1, 0, 0 };
+        int[] dx = { 0, 0, -1, 1 };
+        int m = heights.length;
+        int n = heights[0].length;
+        boolean[][] visited = new boolean[m][n];
+        pq.offer(new int[] { 0, 0, 0 });
+        visited[0][0] = true;
+        while (!pq.isEmpty()) {
+            int[] cell = pq.poll();
+            if (cell[0] == m - 1 && cell[1] == n - 1) {
                 return cell[2];
             }
-            for(int i=0;i<4;i++){
-                int neiY=cell[0]+dy[i];
-                int neiX=cell[1]+dx[i];
-                if(neiY<0 || neiY>=m || neiX<0 || neiX>=n){
+            for (int i = 0; i < 4; i++) {
+                int neiY = cell[0] + dy[i];
+                int neiX = cell[1] + dx[i];
+                if (neiY < 0 || neiY >= m || neiX < 0 || neiX >= n) {
                     continue;
                 }
-                if(visited[neiY][neiX]){
+                if (visited[neiY][neiX]) {
                     continue;
                 }
-                int effort=Math.max(cell[2],Math.abs(heights[neiY][neiX]-heights[cell[0]][cell[1]]));
-                int[] nei=new int[]{neiY,neiX,effort};
+                int effort = Math.max(cell[2], Math.abs(heights[neiY][neiX] - heights[cell[0]][cell[1]]));
+                int[] nei = new int[] { neiY, neiX, effort };
                 pq.offer(nei);
             }
-                visited[cell[0]][cell[1]]=true;
+            visited[cell[0]][cell[1]] = true;
         }
         return -1;
     }
