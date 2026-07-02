@@ -6,18 +6,18 @@ class Solution {
         public DSU(int n) {
             parents = new int[n];
             sizes = new int[n];
-            for(int i=0;i<n;i++){
-                parents[i]=i;
-                sizes[i]=1;
+            for (int i = 0; i < n; i++) {
+                parents[i] = i;
+                sizes[i] = 1;
             }
         }
 
-        public int findParent(int node){
-            if(parents[node]==node){
+        public int findParent(int node) {
+            if (parents[node] == node) {
                 return node;
             }
 
-            return parents[node]=findParent(parents[node]);
+            return parents[node] = findParent(parents[node]);
         }
 
         public void union(int n1, int n2) {
@@ -27,7 +27,7 @@ class Solution {
             if (p1 == p2)
                 return;
 
-            if (sizes[p1] > sizes[p1]) {
+            if (sizes[p1] > sizes[p2]) {
                 parents[p2] = p1;
                 sizes[p1] += sizes[p2];
             } else {
@@ -39,31 +39,32 @@ class Solution {
 
     public int removeStones(int[][] stones) {
         int n = stones.length;
-        List<Integer>[] adj = new ArrayList[n];
-        for (int i = 0; i < n; i++) {
-            adj[i] = new ArrayList<>();
-        }
-        for (int i = 0; i < n; i++) {
-            for (int j = i + 1; j < n; j++) {
-                if (stones[i][0] == stones[j][0] || stones[i][1] == stones[j][1]) {
-                    adj[i].add(j);
-                    adj[j].add(i);
-                }
-            }
-        }
 
-        DSU ds=new DSU(n);
-        for(int i=0;i<n;i++){
-            for(int j:adj[i]){
-                ds.union(i,j);
+        HashMap<Integer, Integer> rows = new HashMap<>();
+        HashMap<Integer, Integer> columns = new HashMap<>();
+        DSU ds = new DSU(n);
+        for (int i = 0; i < n; i++) {
+            int[] stone = stones[i];
+            if (rows.containsKey(stone[0])) {
+                ds.union(i, rows.get(stone[0]));
+            } else {
+                rows.put(stone[0], i);
             }
+            if (columns.containsKey(stone[1])) {
+                ds.union(i, columns.get(stone[1]));
+            } else
+
+            {
+                columns.put(stone[1], i);
+            }
+
         }
-        int disjointCount=0;
-        for(int i=0;i<n;i++){
-            if(ds.findParent(i)==i){
+        int disjointCount = 0;
+        for (int i = 0; i < n; i++) {
+            if (ds.findParent(i) == i) {
                 disjointCount++;
             }
         }
-        return n-disjointCount;
+        return n - disjointCount;
     }
 }
