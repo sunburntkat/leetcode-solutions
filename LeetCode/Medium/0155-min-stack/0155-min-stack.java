@@ -1,12 +1,12 @@
 class MinStack {
-    Stack<Node> s = new Stack<>();
+    Stack<int[]> s = new Stack<>();
 
     public MinStack() {
-        s.push(new Node(Integer.MAX_VALUE, Integer.MAX_VALUE));
+        s.push(new int[]{Integer.MAX_VALUE, Integer.MAX_VALUE});
     }
 
     public void push(int value) {
-        s.push(new Node(value, Math.min(value, getMin())));
+        s.push(new int[]{value, Math.min(value, s.peek()[1])});
     }
 
     public void pop() {
@@ -14,23 +14,15 @@ class MinStack {
     }
 
     public int top() {
-        return s.peek().val;
+        return s.peek()[0];
     }
 
     public int getMin() {
-        return s.peek().min;
+        return s.peek()[1];
     }
 }
 
-class Node {
-    public int val;
-    public int min;
 
-    public Node(int val, int min) {
-        this.val = val;
-        this.min = min;
-    }
-}
 
 /**
  * Your MinStack object will be instantiated and called as such:
