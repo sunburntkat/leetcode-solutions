@@ -1,5 +1,5 @@
 class MinStack {
-    Stack<int[]> s = new Stack<>();
+    Deque<int[]> s = new ArrayDeque<>();
 
     public MinStack() {
         s.push(new int[]{Integer.MAX_VALUE, Integer.MAX_VALUE});
