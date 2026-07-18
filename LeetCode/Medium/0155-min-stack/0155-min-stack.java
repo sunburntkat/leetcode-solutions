@@ -2,15 +2,11 @@ class MinStack {
     Stack<Node> s = new Stack<>();
 
     public MinStack() {
-
+        s.push(new Node(Integer.MAX_VALUE, Integer.MAX_VALUE));
     }
 
     public void push(int value) {
-        if (s.isEmpty()) {
-            s.push(new Node(value, value));
-        } else {
-            s.push(new Node(value, Math.min(value, getMin())));
-        }
+        s.push(new Node(value, Math.min(value, getMin())));
     }
 
     public void pop() {
