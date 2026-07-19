@@ -1,8 +1,6 @@
 class LRUCache {
     HashMap<Integer, DLLNode> hash = new HashMap<>();
-    DLLNode head = new DLLNode(-1, -1);
-    DLLNode tail = head;
-    int size = 0;
+    DLL dll=new DLL();
     int capacity = 0;
 
     public LRUCache(int capacity) {
@@ -12,12 +10,8 @@ class LRUCache {
     public int get(int key) {
         DLLNode node = hash.get(key);
         if (node != null) {
-            if (node != tail) {
-                node.detach();
-                tail.next = node;
-                node.prev = tail;
-                tail = node;
-            }
+            dll.detach(node);
+            dll.addLast(node);
             return node.val;
         }
         return -1;
@@ -27,30 +21,17 @@ class LRUCache {
         DLLNode node = hash.get(key);
         if (node != null) {
             node.val = value;
-            if (node != tail) {
-                node.detach();
-                tail.next = node;
-                node.prev = tail;
-                tail = node;
-            }
+            dll.detach(node);
         } else {
-            if (size == capacity) {
-                hash.remove(head.next.key);
-                if (tail == head.next)
-                    tail = head;
-                head.next = head.next.next;
-                if (capacity != 1) {
-                    head.next.prev = head;
-                }
-                size--;
+            if (hash.size() == capacity) {
+                hash.remove(dll.head.next.key);
+                dll.removeFirst();
             }
-            DLLNode newNode = new DLLNode(key, value);
-            hash.put(key, newNode);
-            tail.next = newNode;
-            newNode.prev = tail;
-            tail = newNode;
-            size++;
+            node = new DLLNode(key, value);
+            hash.put(key, node);
+
         }
+        dll.addLast(node);
 
     }
 }
@@ -66,9 +47,33 @@ class DLLNode {
         this.val = val;
     }
 
-    public void detach() {
-        next.prev = prev;
-        prev.next = next;
+}
+
+
+class DLL{
+    public DLLNode head=new DLLNode(-1, -1);
+    public DLLNode tail=new DLLNode(-1, -1);
+
+    public DLL(){
+        head.next=tail;
+        tail.prev=head;
+    }
+
+    public void addLast(DLLNode node){
+        node.prev=tail.prev;
+        node.prev.next=node;
+        tail.prev=node;
+        node.next=tail;
+    }
+
+    public void removeFirst(){
+        head.next = head.next.next;
+        head.next.prev = head;
+    }
+
+    public void detach(DLLNode node) {
+        node.next.prev = node.prev;
+        node.prev.next = node.next;
     }
 }
 
