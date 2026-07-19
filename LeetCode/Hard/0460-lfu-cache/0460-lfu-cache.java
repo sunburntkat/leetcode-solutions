@@ -2,7 +2,6 @@ class LFUCache {
 
     public FreqNode head = new FreqNode(-1);
     public FreqNode tail = new FreqNode(-1);
-    HashMap<Integer, FreqNode> freqMap = new HashMap<>();
     HashMap<Integer, DataNode> dataMap = new HashMap<>();
     int capacity = 0;
 
@@ -16,7 +15,7 @@ class LFUCache {
         DataNode dataNode = dataMap.get(key);
         if (dataNode == null)
             return -1;
-        reposition(key);
+        reposition(dataNode);
         return dataNode.val;
     }
 
@@ -24,12 +23,11 @@ class LFUCache {
         DataNode dataNode = dataMap.get(key);
         if (dataNode != null) {
             dataNode.val = value;
-            reposition(key);
+            reposition(dataNode);
         } else {
             if (dataMap.size() == capacity) {
                 int oldKey=head.next.head.next.key;
-                if (head.next.head.next.next.val == -1) {
-                    freqMap.remove(oldKey);
+                if (head.next.head.next.next == head.next.tail) {
                     removeFreqNode(head.next);
                 } else {
                     DataNode innerHead = head.next.head;
@@ -39,24 +37,21 @@ class LFUCache {
                 dataMap.remove(oldKey);
 
             }
-            dataNode = new DataNode(key, value, 1);
             FreqNode newFreqNode=head.next;
             if (newFreqNode.freq != 1) {
                 newFreqNode = new FreqNode(1);
                 addFreqAfter(head, newFreqNode);
             }
-            freqMap.put(key, newFreqNode);
+            dataNode = new DataNode(key, value, newFreqNode);
             addDataLast(newFreqNode.tail, dataNode);
             dataMap.put(key, dataNode);
         }
     }
 
-    public void reposition(int key) {
-        DataNode dataNode = dataMap.get(key);
-        FreqNode freqNode = freqMap.get(key);
+    public void reposition(DataNode dataNode) {
+        FreqNode freqNode = dataNode.freqNode;
         int freq = freqNode.freq;
-        if (freqNode.head.next.next.val == -1) {
-            freqMap.remove(key);
+        if (freqNode.head.next.next == freqNode.tail) {
             removeFreqNode(freqNode);
             freqNode=freqNode.prev;
         }
@@ -66,7 +61,7 @@ class LFUCache {
             newFreqNode = new FreqNode(freq + 1);
             addFreqAfter(freqNode, newFreqNode);
         }
-        freqMap.put(key, newFreqNode);
+        dataNode.freqNode=newFreqNode;
         addDataLast(newFreqNode.tail, dataNode);
 
     }
@@ -104,16 +99,13 @@ class LFUCache {
  * obj.put(key,value);
  */
 
-class Node {
-    public Node prev, next;
-}
 
-class FreqNode extends Node {
+class FreqNode {
     public int freq;
     public FreqNode prev, next;
 
-    public DataNode head = new DataNode(-1, -1, 0);
-    public DataNode tail = new DataNode(-1, -1, 0);
+    public DataNode head = new DataNode(-1, -1, this);
+    public DataNode tail = new DataNode(-1, -1, this);
 
     public FreqNode(int freq) {
         this.head.next = tail;
@@ -122,16 +114,16 @@ class FreqNode extends Node {
     }
 }
 
-class DataNode extends Node {
+class DataNode {
     public int key;
     public int val;
-    public int freq;
+    public FreqNode freqNode;
     public DataNode prev, next;
 
-    public DataNode(int key, int val, int freq) {
+    public DataNode(int key, int val, FreqNode freqNode) {
         this.key = key;
         this.val = val;
-        this.freq = freq;
+        this.freqNode = freqNode;
     }
 
 }
