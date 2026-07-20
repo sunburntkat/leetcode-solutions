@@ -2,7 +2,6 @@ class Solution {
     public String countAndSay(int n) {
         String s="1";
         for(int i=0;i<n-1;i++){
-            System.out.println(i);
             StringBuilder sb=new StringBuilder();
             char number=s.charAt(0);
             int count=1;
