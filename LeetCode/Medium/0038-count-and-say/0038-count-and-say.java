@@ -3,17 +3,18 @@ class Solution {
         String s="1";
         for(int i=0;i<n-1;i++){
             StringBuilder sb=new StringBuilder();
-            char number=s.charAt(0);
+            char[] charArray=s.toCharArray();
+            char number=charArray[0];
             int count=1;
-            for(int j=1;j<s.length();j++){
-                if(s.charAt(j)==number){
+            for(int j=1;j<charArray.length;j++){
+                if(charArray[j]==number){
                     count++;
                 }
                 else{
                     sb.append(count);
                     sb.append(number);
                     count=1;
-                    number=s.charAt(j);
+                    number=charArray[j];
                 }
             }
             sb.append(count);
