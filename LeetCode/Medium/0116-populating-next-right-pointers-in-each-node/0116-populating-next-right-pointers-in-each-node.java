@@ -23,18 +23,18 @@ class Node {
 
 class Solution {
     public Node connect(Node root) {
-        Queue<Node> q=new LinkedList<Node>();
-        q.add(root);
-        while(!q.isEmpty()){
-            if(q.peek()==null) break;
-            int size=q.size();
-            Node curr=new Node();
-            for(int i=0;i<size;i++){
-                curr.next=q.poll();
+        if(root==null) return root;
+        Node first=root;
+        while(first.left!=null){
+            Node curr=first;
+            Node prev=new Node();
+            while(curr!=null){
+                prev.next=curr.left;
+                curr.left.next=curr.right;
+                prev=curr.right;
                 curr=curr.next;
-                q.add(curr.left);
-                q.add(curr.right);
             }
+            first=first.left;
         }
         return root;
     }
