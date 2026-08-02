@@ -1,0 +1,6 @@
+/* Write your T-SQL query statement below */
+
+SELECT contest_id, ROUND(CONVERT(FLOAT,COUNT(user_id))/(SELECT COUNT(*) FROM Users) *100.0,2) AS percentage
+FROM Register
+GROUP BY contest_id
+ORDER BY percentage DESC, contest_id
