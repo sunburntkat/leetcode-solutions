@@ -1,10 +1,14 @@
 /* Write your T-SQL query statement below */
-SELECT machine_id, ROUND(AVG(endTime-startTime),3) AS processing_time
-FROM (
-    SELECT machine_id, activity_type,
-        timestamp as startTime, 
-        LEAD(timestamp) OVER(PARTITION BY machine_id, process_id ORDER BY timestamp) as endTime
-    FROM Activity
-    ) as t1
-    WHERE activity_type='start'
+SELECT machine_id, 
+    ROUND(SUM(
+        CASE 
+        WHEN activity_type='start'
+        THEN
+            -timestamp
+        ELSE
+            timestamp
+        END
+        )/(COUNT(process_id)/2) ,3
+    ) as processing_time
+FROM Activity
 GROUP BY machine_id;
