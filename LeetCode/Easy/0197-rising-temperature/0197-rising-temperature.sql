@@ -1,6 +1,10 @@
 /* Write your T-SQL query statement below */
-SELECT a.id
-FROM Weather a
-JOIN Weather b
-ON a.recordDate=DATEADD(day, 1, b.recordDate)
-WHERE a.temperature>b.temperature;
+SELECT Id
+FROM (
+    SELECT id, temperature, recordDate,
+    LAG(temperature) OVER(ORDER BY recordDate) as lagTemp,
+    LAG(recordDate) OVER(ORDER BY recordDate) as lagDate
+    FROM Weather 
+) AS t 
+WHERE temperature>lagTemp AND DATEDIFF(day, lagDate, recordDate)=1; 
+--DATEDIFF(partOfDate, startDate, endDate) -> endDate-startDate
