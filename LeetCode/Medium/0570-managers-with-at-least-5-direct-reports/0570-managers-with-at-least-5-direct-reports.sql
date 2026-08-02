@@ -1,7 +1,4 @@
 /* Write your T-SQL query statement below */
-SELECT b.name
+SELECT name
 FROM Employee a
-JOIN Employee b
-ON a.managerId=b.id  
-GROUP BY a.managerId, b.name
-HAVING COUNT(*)>=5
+WHERE (SELECT count(*) FROM Employee b WHERE b.managerId=a.id)>=5;
